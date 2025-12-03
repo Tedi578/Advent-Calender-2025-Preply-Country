@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Advent Calendar</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f0f8ff;
+    }
+    h1 {
+      margin-top: 20px;
+      color: #b22222;
+    }
+    .calendar {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 10px;
+      max-width: 600px;
+      margin: 20px auto;
+    }
+    .door {
+      background: #ffcc00;
+      border: 2px solid #333;
+      border-radius: 8px;
+      padding: 20px;
+      font-size: 20px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .door:hover {
+      background: #ffa500;
+    }
+    #output {
+      margin-top: 30px;
+      font-size: 18px;
+      padding: 15px;
+      border: 1px solid #333;
+      border-radius: 8px;
+      background: #fff;
+      min-height: 50px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🎄 Advent Calendar 🎄</h1>
+  <div class="calendar" id="calendar"></div>
+  <div id="output">Tap a door to see the message!</div>
+
+  <script>
+    const DOOR_CONTENT = [
+      { to: "Jeoc", title: "Founder Greeting", text: "To Jeoc: You are one of the most important people. This door remembers your action with sparkling water and lollipops. It showed that small things can change the group. You bring strong ideas and history." },
+      { to: "Henri", title: "President Words", text: "To Henri: You are the president. Everyone thanks you for your hard work. You lead with clear words. This door says thank you for your speech in 2025. You said: 'Fairness is our base, learning is our way.' It gave hope to all citizens." },
+      { to: "Tedi", title: "Archive Moment", text: "To Tedi: You write the chronicle. This door thanks you for keeping memory safe. You make notes (not in the lesson notes, but everywhere else) about meetings, elections, and songs. Without you, people forget. You give the country a book of life." },
+      { to: "Lalu", title: "Family Song", text: "To Lalu: You are part of Group 1. This door gives you a line from the cheer song: 'We laugh, we learn, we stand together.' You bring joy and family feeling." },
+      { to: "Lili", title: "Important Role", text: "To Lili: You are one of the 4th most important people. This door remembers your role in the Loser's League. You help balance fun and joy. You are a strong part of the system." },
+      { to: "Otto", title: "Fun Fact", text: "To Otto: You make people smile. This door tells a story: In one meeting, you made a joke about Bubble Tea. Everyone laughed, and the meeting became light. You bring humor to serious times." },
+      { to: "Hasi", title: "Vice President", text: "To Hasi: You are now vice president with California. This door remembers your first words: 'We won the election!' You are part of the new government." },
+      { to: "California", title: "President Message", text: "To California: You won the election in 2025. This door shows your message: 'We build on correction, culture and we will ban cigarettes.' You are now head of government in Preply Country." },
+      { to: "Australia", title: "League Update", text: "To Australia: You went down from Preply League, but you are still champion in the Champions League. This door says you are strong and you open the whiteboard and canvas for the group." },
+      { to: "Ticklemachine", title: "Referee Greeting", text: "To Ticklemachine: You are the referee. This door remembers your motto: 'The smartest wins, but rules must be clear.' You keep games fair and fun." },
+      { to: "Kermit", title: "Vice Reporter", text: "To Kermit: You report about league days. This door thanks you for making facts easy and fun. You mix truth with humor." },
+      { to: "Rainbow", title: "Reporter Greeting", text: "To Rainbow: You are the reporter. This door remembers your words in the election: 'California + Hasi and Kermit + me are close in votes.' You bring news and analysis." },
+      { to: "Ducky", title: "Culture Moment", text: "To Ducky: You bring music and culture. This door gives a song line: 'Preply Country sings, Preply Country shines.' You make meetings full of art." },
+      { to: "Chickeny", title: "Family Greeting", text: "To Chickeny: You are part of Group 1. This door thanks you for your energy. You make the group strong and warm." },
+      { to: "Samuel", title: "Question Master", text: "To Samuel: You ask the questions in the league and meetings. This door gives one: 'True or false: Weddings are always political in Preply Country?' You make children smart." },
+      { to: "Bob", title: "Group 2 Moment", text: "To Bob: You are in Group 2. This door remembers your calm way. You help balance talks and bring peace." },
+      { to: "The Bear", title: "League Scene", text: "To The Bear: You are Samuel's Coach. Bob, too. This door tells about a day when you used humor and knowledge to try to win." },
+      { to: "Arsene Wenger", title: "Citizen Note", text: "To Arsene Wenger: You are a special citizen. This door thanks you for joining talks and working with Roly Mo. You bring wisdom." },
+      { to: "Roly Mo", title: "Note Writer", text: "To Roly Mo: You write notes of meetings. This door shows one: 'Meeting on October 10 – talk about league rules and election.' You keep memory safe." },
+      { to: "Jeoc", title: "Song Idea", text: "To Jeoc: This door gives a cheer song hook: 'Preply Country, we are ready – with knowledge and joy every day!' You bring music to the land, for example with 'Jeoc is the best'." },
+      { to: "Henri", title: "League Memory", text: "To Henri: This door remembers a Preply League day. You were vice question master. You helped make the game fair and smart." },
+      { to: "Tedi", title: "Archive Tip", text: "To Tedi: This door gives a tip: 'Chronicles are best when they have chapters and pictures.'" },
+      { to: "Lalu", title: "Playing", text: "To Lalu: This door makes fun: 'Try out Monopoly! It is made for your age.'" },
+      { to: "Lili", title: "Loser’s League", text: "To Lili: This door makes you more smart: 'Try to win the next Loser’s League! Everyone believes in you.'" },
+      { to: "Rainbow", title: "Big interview", text: "To Rainbow: This door makes you more important: 'You interviewed the UEFA president! Your role gets bigger and bigger. Merry Christmas, Rainbow!'" },
+      { to: "Australia", title: "Next year", text: "To Australia: This door makes you more important: 'You will win the election in November/December 2026! Next year, you will teach more English during the meetings. You will be the Whiteboard and Canvas opener again.'" }
+    ];
+
+    const calendar = document.getElementById("calendar");
+    const output = document.getElementById("output");
+
+    // Create 26 doors
+    for (let i = 1; i <= 26; i++) {
+      const door = document.createElement("div");
+      door.className = "door";
+      door.textContent = i;
+      door.addEventListener("click", () => {
+        const content = DOOR_CONTENT[i - 1];
+        if (content) {
+          output.innerHTML = `<strong>${content.title}</strong><br>${content.text}`;
+        } else {
+          output.textContent = "No content for this door.";
+        }
+      });
+      calendar.appendChild(door);
+    }
+  </script>
+</body>
+</html>
